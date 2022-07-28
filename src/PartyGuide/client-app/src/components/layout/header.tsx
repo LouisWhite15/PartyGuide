@@ -65,7 +65,15 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
               onClick={toggleDrawer(true)}
             >
               <MenuIcon />
-              <SwipeableDrawer
+            </IconButton>
+          </React.Fragment>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            {title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <SwipeableDrawer
                 anchor="left"
                 open={state.isOpen}
                 onClose={toggleDrawer(false)}
@@ -75,13 +83,6 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
               >
                 {list()}
               </SwipeableDrawer>
-            </IconButton>
-          </React.Fragment>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
     </Box>
   )
 }

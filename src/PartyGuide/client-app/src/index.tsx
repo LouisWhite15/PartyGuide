@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOMClient from 'react-dom/client';
 import './index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
@@ -11,14 +11,16 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-ReactDOM.render(
+const rootElement = document.getElementById("root") as Element;
+
+const root = ReactDOMClient.createRoot(rootElement);
+root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
       <React.StrictMode>
         <App />
       </React.StrictMode>
-  </ThemeProvider>,
-  document.getElementById('root')
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -15,8 +15,8 @@ const Home : React.FC = () => (
         to="/questions"
         variant="contained" 
         size="large"
-        >
-          Start
+      >
+        Start
       </Button>
     </Grid>
   </Grid>

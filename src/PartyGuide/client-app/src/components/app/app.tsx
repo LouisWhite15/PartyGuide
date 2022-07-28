@@ -8,10 +8,10 @@ function App() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
-        <Header
-          title='Party Guide'
-        />
         <BrowserRouter>
+          <Header
+            title='Party Guide'
+          />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/questions' element={<Questions />} />

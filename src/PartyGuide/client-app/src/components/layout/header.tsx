@@ -3,6 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import React from "react";
 
 interface HeaderProps {
   title: string
@@ -12,6 +13,8 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
   const [state, setState] = useState({
     isOpen: false
   });
+
+  const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const toggleDrawer =
     (open: boolean) =>
@@ -24,52 +27,56 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
       ) {
         return;
       }
-
-      setState({ ...state, isOpen: open });
+      
+      setState({ isOpen: open });
     };
 
-    const list = () => (
-      <Box
-        sx={{ width: 250 }}
-        role="presentation"
-        onClick={toggleDrawer(false)}
-        onKeyDown={toggleDrawer(false)}
-      >
-        <List>
-          <ListItem key="Home" disablePadding>
-            <ListItemButton key="home" /*component={Link} to="/"*/>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Box>
-    );
+  const list = () => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem key="Home" disablePadding>
+          <ListItemButton key="home" component={Link} to="/">
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  );
   
   return (
-    <Box sx={{ flexGrow: 1, my: 4 }}>
+    <Box sx={{ my: 4 }}>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-            <SwipeableDrawer
-              anchor="left"
-              open={state.isOpen}
-              onClose={toggleDrawer(false)}
-              onOpen={toggleDrawer(true)}
+          <React.Fragment>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={toggleDrawer(true)}
             >
-              {list()}
-            </SwipeableDrawer>
-          </IconButton>
+              <MenuIcon />
+              <SwipeableDrawer
+                anchor="left"
+                open={state.isOpen}
+                onClose={toggleDrawer(false)}
+                onOpen={toggleDrawer(true)}
+                disableBackdropTransition={!iOS} 
+                disableDiscovery={iOS}
+              >
+                {list()}
+              </SwipeableDrawer>
+            </IconButton>
+          </React.Fragment>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>

@@ -9,7 +9,7 @@ const Questions : React.FC = () => (
     alignItems="center"
   >
     <Grid item xs={12}>
-      <Typography>Questions</Typography>
+      <Typography variant="h6">Questions</Typography>
     </Grid>
   </Grid>
 )

@@ -10,7 +10,7 @@ const renderGames = ( games: Game[] ) => {
     return games.map(game => {
       return (
         <Card key={game.id}>
-        <CardActionArea>
+          <CardActionArea>
             <CardContent>
             <Typography variant="h5" component="div">
                 {game.name}
@@ -19,7 +19,7 @@ const renderGames = ( games: Game[] ) => {
                 {game.description}
             </Typography>
             </CardContent>
-        </CardActionArea>
+          </CardActionArea>
         </Card>
       )
     });

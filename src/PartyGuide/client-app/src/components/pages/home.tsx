@@ -1,4 +1,5 @@
 import { Button, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Home : React.FC = () => (
   <Grid
@@ -9,7 +10,14 @@ const Home : React.FC = () => (
     alignItems="center"
   >
     <Grid item xs={12}>
-      <Button variant="contained" size="large">Start</Button>
+      <Button 
+        component={Link}
+        to="/questions"
+        variant="contained" 
+        size="large"
+        >
+          Start
+      </Button>
     </Grid>
   </Grid>
 )

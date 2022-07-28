@@ -2,6 +2,7 @@ import { Box, Container } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from '../layout/header';
 import Home from '../pages/home';
+import Questions from '../pages/questions';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/questions' element={<Questions />} />
           </Routes>
         </BrowserRouter>
       </Box>

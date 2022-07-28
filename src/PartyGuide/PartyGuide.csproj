@@ -39,9 +39,6 @@
     <None Include="client-app\public\robots.txt" />
     <None Include="client-app\public\logo192.png" />
     <None Include="client-app\src\index.tsx" />
-    <None Include="client-app\src\App.tsx" />
-    <None Include="client-app\src\App.test.tsx" />
-    <None Include="client-app\src\App.css" />
     <None Include="client-app\src\index.css" />
     <None Include="client-app\src\setupTests.ts" />
     <None Include="client-app\src\reportWebVitals.ts" />

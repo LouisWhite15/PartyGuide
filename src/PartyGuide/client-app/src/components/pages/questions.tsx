@@ -1,7 +1,10 @@
+import axios from 'axios';
 import { Checkbox, FormControl, FormControlLabel, FormGroup, Grid, Typography } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GetGamesResponse from '../common/types/getGamesResponse';
+import Equipment from '../common/types/equipment';
 
 const Questions : React.FC = () => {
   let navigate = useNavigate();
@@ -29,18 +32,59 @@ const Questions : React.FC = () => {
 
   const onNext = async () => {
     setLoading(true);
-
-    // TODO: API call to the backend to save the users answers
-    // Wait 2 seconds to simulate loading time
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    console.log(`Cards: ${cards}`);
-    console.log(`Ping Pong Balls: ${pingPongBalls}`);
-    console.log(`Cups: ${cups}`);
-
+    let gamesResponse = await getGames() as GetGamesResponse;
     setLoading(false);
 
-    navigate('/games');
+    console.log('gamesresponse')
+    console.log(gamesResponse)
+
+    navigate('/games', { state: gamesResponse });
+  };
+
+  async function getGames() {
+    try {
+      const { data } = await axios.post<GetGamesResponse>(
+        `${process.env.REACT_APP_BACKEND_API_URL}/api/game/getGames`,
+        { selectedEquipment: getSelectedEquipment() },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+        },
+      );
+
+      console.log(JSON.stringify(data, null, 4));
+
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log('error message: ', error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+  }
+
+  // TODO: There are better ways of doing this
+  function getSelectedEquipment(): Equipment[] {
+    let selectedEquipment: Equipment[] = [];
+    
+    if (cards) {
+      selectedEquipment.push(Equipment.Cards)
+    }
+
+    if (pingPongBalls) {
+      selectedEquipment.push(Equipment.PingPongBalls)
+    }
+
+    if (cups) {
+      selectedEquipment.push(Equipment.Cups)
+    }
+
+    return selectedEquipment;
   };
 
   const { cards, pingPongBalls, cups, isLoading } = state;

@@ -9,6 +9,7 @@ const Questions : React.FC = () => {
   const [state, setState] = useState({
     cards: false,
     pingPongBalls: false,
+    cups: false,
     isLoading: false,
   })
 
@@ -35,13 +36,14 @@ const Questions : React.FC = () => {
 
     console.log(`Cards: ${cards}`);
     console.log(`Ping Pong Balls: ${pingPongBalls}`);
+    console.log(`Cups: ${cups}`);
 
     setLoading(false);
 
     navigate('/games');
   };
 
-  const { cards, pingPongBalls, isLoading } = state;
+  const { cards, pingPongBalls, cups, isLoading } = state;
 
   return (
     <Grid
@@ -65,6 +67,12 @@ const Questions : React.FC = () => {
               <Checkbox checked={pingPongBalls} onChange={handleChange} name="pingPongBalls" />
             }
             label="Ping Pong Balls"
+          />
+          <FormControlLabel 
+            control={
+              <Checkbox checked={cups} onChange={handleChange} name="cups" />
+            }
+            label="Cups"
           />
         </FormGroup>
       </FormControl>

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PartyGuide.Persistence;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace PartyGuide.Tests.Support;
 
@@ -10,18 +9,15 @@ public abstract class FunctionalTestBase : IClassFixture<IntegrationWebApplicati
     protected abstract string Path { get; }
     
     protected HttpClient Client { get; }
-    protected ApplicationDbContext DbContext { get; }
 
     public FunctionalTestBase(IntegrationWebApplicationFactory factory)
     {
         _factory = factory;
 
-        Client = factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
+        Client = factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = true
         });
-
-        DbContext = factory.Services.GetRequiredService<ApplicationDbContext>();
     }
 
     public void Dispose()

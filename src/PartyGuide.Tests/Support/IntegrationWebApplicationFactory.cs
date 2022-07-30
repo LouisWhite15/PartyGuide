@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using PartyGuide.Persistence;
 
 namespace PartyGuide.Tests.Support;
@@ -17,16 +16,11 @@ public class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
                 d => d.ServiceType ==
                     typeof(DbContextOptions<ApplicationDbContext>));
 
-            var dbContextDescriptor = services.Single(
-                d => d.ServiceType ==
-                    typeof(ApplicationDbContext));
-
             services.Remove(dbContextOptionsDescriptor);
-            services.Remove(dbContextDescriptor);
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                options.UseInMemoryDatabase("TestInMemoryDatabase");
             });
 
             var sp = services.BuildServiceProvider();
@@ -34,7 +28,6 @@ public class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<ApplicationDbContext>();
-            var logger = scopedServices.GetRequiredService<ILogger<IntegrationWebApplicationFactory>>();
 
             db.Database.EnsureCreated();
         });

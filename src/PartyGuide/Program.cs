@@ -30,10 +30,10 @@ builder.Services.AddSingleton(_ => config);
 builder.Services.AddTransient<IGameService, GameService>();
 
 // Persistence
-builder.Services.AddDbContext<ApplicationDbContext>();
-
-using var dbContext = new ApplicationDbContext(config);
-dbContext.Database.Migrate();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlite($"Data Source={config.ConnectionStrings.Sqlite}");
+});
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 
@@ -41,6 +41,25 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
+
+// Migrate database
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+    
+    try
+    {
+        Log.Logger.Information("Migrating database");
+
+        dbContext.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Log.Logger.Error(ex, "Migration failed");
+    }
+}
 
 // Swagger
 app.UseSwagger();

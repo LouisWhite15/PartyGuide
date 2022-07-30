@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PartyGuide.Configuration;
 using PartyGuide.Contracts;
 using PartyGuide.Persistence.Entities;
 
@@ -8,17 +7,11 @@ namespace PartyGuide.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
-    private readonly string _dbPath;
-
     public DbSet<GameEntity> Games { get; set; } = null!;
 
-    public ApplicationDbContext(Config config)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        _dbPath = config.ConnectionStrings.Sqlite;
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options) 
-        => options.UseSqlite($"Data Source={_dbPath}");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

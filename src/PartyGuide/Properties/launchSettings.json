@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -11,19 +11,19 @@
     "PartyGuide": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7046;http://localhost:5003",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
-      }
+      },
+      "applicationUrl": "https://localhost:7046;http://localhost:5003"
     },
     "PartyGuide (API Only)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7046;http://localhost:5003",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:7046;http://localhost:5003"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -32,8 +32,21 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "ASPNETCORE_URLS": "https://+:443;http://+:80",
+        "ASPNETCORE_HTTPS_PORT": "7046"
+      },
+      "publishAllPorts": true,
+      "useSSL": true,
+      "httpPort": 5003,
+      "sslPort": 7046
     }
   }
 }
-
-

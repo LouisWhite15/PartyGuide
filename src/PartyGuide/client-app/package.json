@@ -2,6 +2,8 @@
   "name": "client-app",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://localhost:44321",
+  "type": "module",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",

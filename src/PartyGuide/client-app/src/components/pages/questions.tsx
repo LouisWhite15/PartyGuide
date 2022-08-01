@@ -44,7 +44,7 @@ const Questions : React.FC = () => {
   async function getGames() {
     try {
       const { data } = await axios.post<GetGamesResponse>(
-        `${process.env.REACT_APP_BACKEND_API_URL}/api/game/getGames`,
+        "/api/game/getGames",
         { selectedEquipment: getSelectedEquipment() },
         {
           headers: {

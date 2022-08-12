@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyGuide", "PartyGuide\PartyGuide.csproj", "{14AEF5C1-C69E-4DE7-95C1-D762EA84AEF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyGuide", "PartyGuide\PartyGuide.csproj", "{14AEF5C1-C69E-4DE7-95C1-D762EA84AEF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyGuide.Tests", "PartyGuide.Tests\PartyGuide.Tests.csproj", "{493CB1F5-70AF-44D4-87CD-F45CA8E49471}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89F40898-0073-46FE-9AA1-94C8906A8BF9}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

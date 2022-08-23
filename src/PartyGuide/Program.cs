@@ -54,9 +54,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
-// Migrate database
 if (app.Environment.IsDevelopment())
 {
+    // Migrate database
     using var scope = app.Services.CreateScope();
     var serviceProvider = scope.ServiceProvider;
     var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
@@ -71,11 +71,11 @@ if (app.Environment.IsDevelopment())
     {
         Log.Logger.Error(ex, "Migration failed");
     }
-}
 
-// Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
+    // Swagger
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

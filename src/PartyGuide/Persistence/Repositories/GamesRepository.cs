@@ -7,10 +7,13 @@ namespace PartyGuide.Persistence.Repositories;
 public interface IGameRepository
 {
     Task AddAsync(GameEntity entity);
+    Task DeleteAsync(Guid id);
+    Task UpdateAsync(Guid id, GameEntity entity);
+    Task<GameEntity?> GetAsync(Guid id);
     Task<List<GameEntity>> GetAsync(List<Equipment> selectedEquipment);
 }
 
-public class GameRepository: IGameRepository
+public class GameRepository : IGameRepository
 {
     private readonly ILogger<GameRepository> _logger;
     private readonly ApplicationDbContext _dbContext;
@@ -31,6 +34,22 @@ public class GameRepository: IGameRepository
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task DeleteAsync(Guid id)
+    {
+        _logger.LogDebug("Deleting entity of type {entityType} with id {id}", nameof(GameEntity), id);
+
+        var gameEntity = await _dbContext.Games.SingleOrDefaultAsync(game => game.Id == id);
+
+        if (gameEntity == null)
+        {
+            _logger.LogWarning("Could not find entity of type {entityType} with id {id}", nameof(GameEntity), id);
+            return;
+        }
+
+        _dbContext.Games.Remove(gameEntity);
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<List<GameEntity>> GetAsync(List<Equipment> selectedEquipment)
     {
         _logger.LogDebug("Retrieving entities of type {entityType} with equipment {requiredEquipment}", nameof(GameEntity), string.Join(',', selectedEquipment));
@@ -43,5 +62,36 @@ public class GameRepository: IGameRepository
             .ToList();
 
         return filteredGames;
+    }
+
+    public async Task<GameEntity?> GetAsync(Guid id)
+    {
+        _logger.LogDebug("Retrieving entity of type {entityType} with id {id}", nameof(GameEntity), id);
+
+        var game = await _dbContext.Games.SingleOrDefaultAsync(game => game.Id == id);
+
+        if (game == null)
+        {
+            _logger.LogWarning("Could not find entity of type {entityType} with id {id}", nameof(GameEntity), id);
+            return null;
+        }
+
+        return game;
+    }
+
+    public async Task UpdateAsync(Guid id, GameEntity entity)
+    {
+        _logger.LogDebug("Updating entity of type {entityType} with id {id}", nameof(GameEntity), id);
+
+        var game = await _dbContext.Games.SingleOrDefaultAsync(game => game.Id == id);
+
+        if (game == null)
+        {
+            _logger.LogWarning("Could not find entity of type {entityType} with id {id}", nameof(GameEntity), id);
+            return;
+        }
+
+        _dbContext.Games.Update(entity);
+        await _dbContext.SaveChangesAsync();
     }
 }

@@ -13,17 +13,20 @@ public class GameController : ControllerBase
     private readonly IGameService _gameService;
     private readonly IValidator<CreateGameRequest> _createGameRequestValidator;
     private readonly IValidator<GetGamesRequest> _getGamesRequestValidator;
+    private readonly IValidator<UpdateGameRequest> _updateGameRequestValidator;
 
     public GameController(
         ILogger<GameController> logger,
         IGameService gameService,
         IValidator<CreateGameRequest> createGameRequestValidator,
-        IValidator<GetGamesRequest> getGamesRequestValidator)
+        IValidator<GetGamesRequest> getGamesRequestValidator,
+        IValidator<UpdateGameRequest> updateGameRequestValidator)
     {
         _logger = logger;
         _gameService = gameService;
         _createGameRequestValidator = createGameRequestValidator;
         _getGamesRequestValidator = getGamesRequestValidator;
+        _updateGameRequestValidator = updateGameRequestValidator;
     }
 
     [HttpPost]
@@ -34,7 +37,7 @@ public class GameController : ControllerBase
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
-        var gameId = await _gameService.AddGameAsync(request);
+        var gameId = await _gameService.AddAsync(request);
 
         // TODO: When an endpoint is created to get based on ID, change this to CreatedAtAction
         return Ok(gameId);
@@ -49,8 +52,44 @@ public class GameController : ControllerBase
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
 
-        var games = await _gameService.GetGamesAsync(request.SelectedEquipment);
+        var games = await _gameService.GetAsync(request.SelectedEquipment);
 
         return Ok(games);
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var game = await _gameService.GetAsync(id);
+
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(game);
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _gameService.DeleteAsync(id);
+
+        return Ok();
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateGameRequest request)
+    {
+        var validationResult = await _updateGameRequestValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
+        await _gameService.UpdateAsync(id, request);
+
+        return Ok();
     }
 }

@@ -29,4 +29,18 @@ internal static class GameRequestFactory
 
         return getGamesRequest;
     }
+
+    internal static UpdateGameRequest UpdateGameRequest(Action<UpdateGameRequest>? customisation = null)
+    {
+        var updateGameRequest = new UpdateGameRequest
+        {
+            Name = "Updated Name",
+            Description = "Updated Description",
+            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cups }
+        };
+
+        customisation?.Invoke(updateGameRequest);
+
+        return updateGameRequest;
+    }
 }

@@ -39,8 +39,7 @@ public class GameController : ControllerBase
 
         var gameId = await _gameService.AddAsync(request);
 
-        // TODO: When an endpoint is created to get based on ID, change this to CreatedAtAction
-        return Ok(gameId);
+        return CreatedAtAction(nameof(Get), new { id = gameId });
     }
 
     [HttpPost]
@@ -81,6 +80,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPatch]
+    [Route("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateGameRequest request)
     {
         var validationResult = await _updateGameRequestValidator.ValidateAsync(request);

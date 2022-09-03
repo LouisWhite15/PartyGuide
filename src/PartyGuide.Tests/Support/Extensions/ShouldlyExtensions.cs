@@ -14,4 +14,9 @@ internal static class ShouldlyExtensions
     {
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
+
+    internal static void ShouldBeCreated(this HttpResponseMessage response)
+    {
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+    }
 }

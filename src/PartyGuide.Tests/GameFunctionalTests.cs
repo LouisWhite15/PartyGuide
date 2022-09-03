@@ -11,11 +11,14 @@ using System.Text.Json;
 
 namespace PartyGuide.Tests;
 
-public class GameFunctionalTests : FunctionalTestBase
+public class GameFunctionalTests : FunctionalTestBase, IDisposable
 {
     protected override string Path => "api/Game";
 
-    public GameFunctionalTests(IntegrationWebApplicationFactory factory) : base(factory) { }
+    public GameFunctionalTests(IntegrationWebApplicationFactory factory) 
+        : base(factory) 
+    {
+    }
 
     [Fact]
     public async Task Create_GivenValidModel_ShouldCreateGame()
@@ -28,7 +31,7 @@ public class GameFunctionalTests : FunctionalTestBase
         var response = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
 
         // Assert
-        response.ShouldBeOk();
+        response.ShouldBeCreated();
     }
 
     [Theory]
@@ -110,4 +113,106 @@ public class GameFunctionalTests : FunctionalTestBase
         var games = JsonSerializer.Deserialize<List<Game>>(stringContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         games.ShouldBeEmpty();
     }
+
+    [Fact]
+    public async Task GetGame_ById_ShouldReturnGame()
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        // Act
+        var response = await Client.GetAsync($"{Path}/{gameId}");
+
+        // Assert
+        response.ShouldBeOk();
+
+        var stringContent = await response.Content.ReadAsStringAsync();
+        var game = JsonSerializer.Deserialize<Game>(stringContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        game.ShouldNotBeNull();
+        game.ShouldBeLike(new
+        {
+            Id = gameId,
+            Name = createGameRequest.Name,
+            Description = createGameRequest.Description,
+            RequiredEquipment = createGameRequest.RequiredEquipment
+        });
+    }
+
+    [Fact]
+    public async Task DeleteGame_ById_ShouldDeleteGame()
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        // Act
+        var response = await Client.DeleteAsync($"{Path}/{gameId}");
+
+        // Assert
+        response.ShouldBeOk();
+
+        DbContext.Games.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task UpdateGame_GivenValidModel_ShouldUpdateGame()
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        var updateGameRequest = GameRequestFactory.UpdateGameRequest();
+        var jsonUpdateGameRequest = JsonSerializer.Serialize(updateGameRequest);
+
+        // Act
+        var response = await Client.PatchAsync($"{Path}/{gameId}", new StringContent(jsonUpdateGameRequest, Encoding.UTF8, "application/json"));
+
+        // Assert
+        response.ShouldBeOk();
+        
+        var game = DbContext.Games.ShouldHaveSingleItem();
+        game.ShouldBeLike(new
+        {
+            Id = gameId,
+            Name = updateGameRequest.Name,
+            Description = updateGameRequest.Description,
+            RequiredEquipment = updateGameRequest.RequiredEquipment
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidUpdateGameRequestTestData))]
+    public async Task UpdateGame_GivenInvalidModel_ShouldNotUpdateGame(Action<UpdateGameRequest> invalidatingAction)
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        var updateGameRequest = GameRequestFactory.UpdateGameRequest(invalidatingAction);
+        var jsonUpdateGameRequest = JsonSerializer.Serialize(updateGameRequest);
+
+        // Act
+        var response = await Client.PatchAsync($"{Path}/{gameId}", new StringContent(jsonUpdateGameRequest, Encoding.UTF8, "application/json"));
+
+        // Assert
+        response.ShouldBeBadRequest();
+    }
+}
+
+internal class CreatedGameResponse
+{
+    public Guid Id { get; set; }
 }

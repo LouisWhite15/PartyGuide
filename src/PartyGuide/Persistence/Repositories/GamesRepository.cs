@@ -91,7 +91,10 @@ public class GameRepository : IGameRepository
             return;
         }
 
-        _dbContext.Games.Update(entity);
+        game.Name = entity.Name;
+        game.Description = entity.Description;
+        game.RequiredEquipment = entity.RequiredEquipment;
+
         await _dbContext.SaveChangesAsync();
     }
 }

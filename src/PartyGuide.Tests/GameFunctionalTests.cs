@@ -11,11 +11,14 @@ using System.Text.Json;
 
 namespace PartyGuide.Tests;
 
-public class GameFunctionalTests : FunctionalTestBase
+public class GameFunctionalTests : FunctionalTestBase, IDisposable
 {
     protected override string Path => "api/Game";
 
-    public GameFunctionalTests(IntegrationWebApplicationFactory factory) : base(factory) { }
+    public GameFunctionalTests(IntegrationWebApplicationFactory factory) 
+        : base(factory) 
+    {
+    }
 
     [Fact]
     public async Task Create_GivenValidModel_ShouldCreateGame()
@@ -118,7 +121,8 @@ public class GameFunctionalTests : FunctionalTestBase
         var createGameRequest = GameRequestFactory.CreateGameRequest();
         var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
         var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
-        var gameId = await createGameResponse.Content.ReadAsStringAsync();
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
 
         // Act
         var response = await Client.GetAsync($"{Path}/{gameId}");
@@ -142,26 +146,69 @@ public class GameFunctionalTests : FunctionalTestBase
     public async Task DeleteGame_ById_ShouldDeleteGame()
     {
         // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
 
         // Act
+        var response = await Client.DeleteAsync($"{Path}/{gameId}");
 
         // Assert
+        response.ShouldBeOk();
+
+        DbContext.Games.ShouldBeEmpty();
     }
 
     [Fact]
     public async Task UpdateGame_GivenValidModel_ShouldUpdateGame()
     {
-
-    }
-
-    [Fact]
-    public async Task UpdateGame_GivenInvalidModel_ShouldNotUpdateGame()
-    {
         // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        var updateGameRequest = GameRequestFactory.UpdateGameRequest();
+        var jsonUpdateGameRequest = JsonSerializer.Serialize(updateGameRequest);
 
         // Act
+        var response = await Client.PatchAsync($"{Path}/{gameId}", new StringContent(jsonUpdateGameRequest, Encoding.UTF8, "application/json"));
 
         // Assert
+        response.ShouldBeOk();
+        
+        var game = DbContext.Games.ShouldHaveSingleItem();
+        game.ShouldBeLike(new
+        {
+            Id = gameId,
+            Name = updateGameRequest.Name,
+            Description = updateGameRequest.Description,
+            RequiredEquipment = updateGameRequest.RequiredEquipment
+        });
+    }
+
+    [Theory]
+    [ClassData(typeof(InvalidUpdateGameRequestTestData))]
+    public async Task UpdateGame_GivenInvalidModel_ShouldNotUpdateGame(Action<UpdateGameRequest> invalidatingAction)
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var createGameResponseString = await createGameResponse.Content.ReadAsStringAsync();
+        var gameId = JsonSerializer.Deserialize<CreatedGameResponse>(createGameResponseString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true })?.Id;
+
+        var updateGameRequest = GameRequestFactory.UpdateGameRequest(invalidatingAction);
+        var jsonUpdateGameRequest = JsonSerializer.Serialize(updateGameRequest);
+
+        // Act
+        var response = await Client.PatchAsync($"{Path}/{gameId}", new StringContent(jsonUpdateGameRequest, Encoding.UTF8, "application/json"));
+
+        // Assert
+        response.ShouldBeBadRequest();
     }
 }
 

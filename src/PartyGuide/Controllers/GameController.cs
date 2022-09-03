@@ -80,6 +80,7 @@ public class GameController : ControllerBase
     }
 
     [HttpPatch]
+    [Route("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateGameRequest request)
     {
         var validationResult = await _updateGameRequestValidator.ValidateAsync(request);

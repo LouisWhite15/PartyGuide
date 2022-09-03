@@ -3,7 +3,7 @@ using PartyGuide.Contracts.Requests;
 
 namespace PartyGuide.Validators;
 
-public class UpdateGameRequestValidator : AbstractValidator<CreateGameRequest>
+public class UpdateGameRequestValidator : AbstractValidator<UpdateGameRequest>
 {
     public UpdateGameRequestValidator()
     {

@@ -29,7 +29,7 @@ const Games : React.FC = () => {
     }
     else {
       return (
-        <Box sx={{ my: 2 }}>
+        <Box sx={{ my: 2, textAlign: "center" }}>
           <Typography variant="body1" component="div">
             No games found.
           </Typography>

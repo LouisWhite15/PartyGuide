@@ -210,6 +210,45 @@ public class GameFunctionalTests : FunctionalTestBase, IDisposable
         // Assert
         response.ShouldBeBadRequest();
     }
+
+    [Fact]
+    public async Task Get_ShouldReturnAllGames()
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+
+        var createGameRequestTwo = GameRequestFactory.CreateGameRequest(createGameRequest => createGameRequest.Name = "Test Game 2");
+        var jsonCreateGameRequestTwo = JsonSerializer.Serialize(createGameRequestTwo);
+        await Client.PostAsync(Path, new StringContent(jsonCreateGameRequestTwo, Encoding.UTF8, "application/json"));
+
+        // Act
+        var response = await Client.GetAsync(Path);
+
+        // Assert
+        response.ShouldBeOk();
+
+        var stringContent = await response.Content.ReadAsStringAsync();
+        var games = JsonSerializer.Deserialize<List<Game>>(stringContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        games.ShouldNotBeNull();
+        games.ShouldBeLike(new []
+        {
+            new
+            {
+                Name = createGameRequest.Name,
+                Description = createGameRequest.Description,
+                RequiredEquipment = createGameRequest.RequiredEquipment
+            },
+            new
+            {
+                Name = createGameRequestTwo.Name,
+                Description = createGameRequestTwo.Description,
+                RequiredEquipment = createGameRequestTwo.RequiredEquipment
+            },
+        });
+    }
 }
 
 internal class CreatedGameResponse

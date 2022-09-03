@@ -10,6 +10,7 @@ public interface IGameService
 {
     Task<Guid> AddAsync(CreateGameRequest createGameRequest);
     Task<List<Game>> GetAsync(List<Equipment> selectedEquipment);
+    Task<List<Game>> GetAsync();
     Task<Game?> GetAsync(Guid id);
     Task UpdateAsync(Guid id, UpdateGameRequest updateGameRequest);
     Task DeleteAsync(Guid id);
@@ -48,6 +49,13 @@ public class GameService : IGameService
         var gameEntities = await _gameRepository.GetAsync(selectedEquipment);
 
         return gameEntities.Select(gameEntity => new Game(gameEntity)).ToList();
+    }
+
+    public async Task<List<Game>> GetAsync()
+    {
+        var games = await _gameRepository.GetAsync();
+
+        return games.Select(game => new Game(game)).ToList();
     }
 
     public async Task<Game?> GetAsync(Guid id)

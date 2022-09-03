@@ -57,6 +57,14 @@ public class GameController : ControllerBase
     }
 
     [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var games = await _gameService.GetAsync();
+
+        return Ok(games);
+    }
+
+    [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {

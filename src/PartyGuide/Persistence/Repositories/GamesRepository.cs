@@ -9,6 +9,7 @@ public interface IGameRepository
     Task AddAsync(GameEntity entity);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Guid id, GameEntity entity);
+    Task<List<GameEntity>> GetAsync();
     Task<GameEntity?> GetAsync(Guid id);
     Task<List<GameEntity>> GetAsync(List<Equipment> selectedEquipment);
 }
@@ -48,6 +49,13 @@ public class GameRepository : IGameRepository
 
         _dbContext.Games.Remove(gameEntity);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<GameEntity>> GetAsync()
+    {
+        _logger.LogDebug("Retrieving entities of type {entityType}", nameof(GameEntity));
+
+        return await _dbContext.Games.ToListAsync();
     }
 
     public async Task<List<GameEntity>> GetAsync(List<Equipment> selectedEquipment)

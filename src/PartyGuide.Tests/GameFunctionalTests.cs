@@ -28,7 +28,7 @@ public class GameFunctionalTests : FunctionalTestBase
         var response = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
 
         // Assert
-        response.ShouldBeOk();
+        response.ShouldBeCreated();
     }
 
     [Theory]
@@ -110,4 +110,62 @@ public class GameFunctionalTests : FunctionalTestBase
         var games = JsonSerializer.Deserialize<List<Game>>(stringContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         games.ShouldBeEmpty();
     }
+
+    [Fact]
+    public async Task GetGame_ById_ShouldReturnGame()
+    {
+        // Arrange
+        var createGameRequest = GameRequestFactory.CreateGameRequest();
+        var jsonCreateGameRequest = JsonSerializer.Serialize(createGameRequest);
+        var createGameResponse = await Client.PostAsync(Path, new StringContent(jsonCreateGameRequest, Encoding.UTF8, "application/json"));
+        var gameId = await createGameResponse.Content.ReadAsStringAsync();
+
+        // Act
+        var response = await Client.GetAsync($"{Path}/{gameId}");
+
+        // Assert
+        response.ShouldBeOk();
+
+        var stringContent = await response.Content.ReadAsStringAsync();
+        var game = JsonSerializer.Deserialize<Game>(stringContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        game.ShouldNotBeNull();
+        game.ShouldBeLike(new
+        {
+            Id = gameId,
+            Name = createGameRequest.Name,
+            Description = createGameRequest.Description,
+            RequiredEquipment = createGameRequest.RequiredEquipment
+        });
+    }
+
+    [Fact]
+    public async Task DeleteGame_ById_ShouldDeleteGame()
+    {
+        // Arrange
+
+        // Act
+
+        // Assert
+    }
+
+    [Fact]
+    public async Task UpdateGame_GivenValidModel_ShouldUpdateGame()
+    {
+
+    }
+
+    [Fact]
+    public async Task UpdateGame_GivenInvalidModel_ShouldNotUpdateGame()
+    {
+        // Arrange
+
+        // Act
+
+        // Assert
+    }
+}
+
+internal class CreatedGameResponse
+{
+    public Guid Id { get; set; }
 }

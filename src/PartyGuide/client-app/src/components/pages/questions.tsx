@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GetGamesResponse from '../common/types/getGamesResponse';
 import Equipment from '../common/types/equipment';
+import { motion } from 'framer-motion';
 
 const Questions : React.FC = () => {
   let navigate = useNavigate();
@@ -97,38 +98,85 @@ const Questions : React.FC = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Typography variant="body1">Please select the equipment that you have</Typography>
+      <Typography 
+        variant="body1"
+        component={motion.div}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        Please select the equipment that you have
+      </Typography>
       <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
         <FormGroup>
-          <FormControlLabel 
-            control={
-              <Checkbox checked={cards} onChange={handleChange} name="cards" />
-            }
-            label="Cards"
-          />
-          <FormControlLabel 
-            control={
-              <Checkbox checked={pingPongBalls} onChange={handleChange} name="pingPongBalls" />
-            }
-            label="Ping Pong Balls"
-          />
-          <FormControlLabel 
-            control={
-              <Checkbox checked={cups} onChange={handleChange} name="cups" />
-            }
-            label="Cups"
-          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <FormControlLabel 
+              control={
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Checkbox checked={cards} onChange={handleChange} name="cards" />
+                </motion.div>
+              }
+              label="Cards"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <FormControlLabel 
+              control={
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Checkbox checked={pingPongBalls} onChange={handleChange} name="pingPongBalls" />
+                </motion.div>
+              }
+              label="Ping Pong Balls"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <FormControlLabel 
+              control={
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Checkbox checked={cups} onChange={handleChange} name="cups" />
+                </motion.div>
+              }
+              label="Cups"
+            />
+          </motion.div>
         </FormGroup>
       </FormControl>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
       <LoadingButton
-          type="submit"
-          variant="contained" 
-          size="small"
-          onClick={onNext}
-          loading={isLoading}
-        >
-          Next
-       </LoadingButton>
+        type="submit"
+        variant="contained" 
+        size="small"
+        onClick={onNext}
+        loading={isLoading}
+      >
+        Next
+      </LoadingButton>
+      </motion.div>
     </Grid>
   );
 }

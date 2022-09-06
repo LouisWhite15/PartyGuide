@@ -1,5 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Home : React.FC = () => (
   <Grid
@@ -10,14 +11,20 @@ const Home : React.FC = () => (
     alignItems="center"
   >
     <Grid item xs={12}>
-      <Button 
-        component={Link}
-        to="/questions"
-        variant="contained" 
-        size="large"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
       >
-        Start
-      </Button>
+        <Button 
+          component={Link}
+          to="/questions"
+          variant="contained" 
+          size="large"
+        >
+          Start
+        </Button>
+      </motion.div>
     </Grid>
   </Grid>
 )

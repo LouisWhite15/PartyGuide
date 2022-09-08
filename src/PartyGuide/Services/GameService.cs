@@ -31,13 +31,7 @@ public class GameService : IGameService
 
     public async Task<Guid> AddAsync(CreateGameRequest createGameRequest)
     {
-        var gameEntity = new GameEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = createGameRequest.Name,
-            Description = createGameRequest.Description,
-            RequiredEquipment = createGameRequest.RequiredEquipment
-        };
+        var gameEntity = new GameEntity(createGameRequest);
 
         await _gameRepository.AddAsync(gameEntity);
 
@@ -74,13 +68,7 @@ public class GameService : IGameService
 
     public async Task UpdateAsync(Guid id, UpdateGameRequest updateGameRequest)
     {
-        var gameEntity = new GameEntity
-        {
-            Id = id,
-            Name = updateGameRequest.Name,
-            Description = updateGameRequest.Description,
-            RequiredEquipment = updateGameRequest.RequiredEquipment
-        };
+        var gameEntity = new GameEntity(id, updateGameRequest);
 
         await _gameRepository.UpdateAsync(id, gameEntity);
     }

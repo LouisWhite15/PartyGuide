@@ -10,5 +10,6 @@ public class UpdateGameRequestValidator : AbstractValidator<UpdateGameRequest>
         RuleFor(updateGameRequest => updateGameRequest.Name).NotEmpty();
         RuleFor(updateGameRequest => updateGameRequest.Description).NotEmpty();
         RuleFor(updateGameRequest => updateGameRequest.RequiredEquipment).NotEmpty();
+        RuleFor(updateGameRequest => updateGameRequest.Rules).NotEmpty();
     }
 }

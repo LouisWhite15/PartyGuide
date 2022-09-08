@@ -1,4 +1,5 @@
 ﻿using PartyGuide.Contracts;
+using PartyGuide.Contracts.Requests;
 using PartyGuide.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,10 @@ public class GameEntity
     [Required]
     public List<Equipment> RequiredEquipment { get; set; } = new();
 
+    [Required]
+    [StringLength(PersistenceConstants.RulesMaxLength)]
+    public string Rules { get; set; } = string.Empty;
+
     public GameEntity()
     {
     }
@@ -31,5 +36,24 @@ public class GameEntity
         Name = game.Name;
         Description = game.Description;
         RequiredEquipment = game.RequiredEquipment;
+        Rules = game.Rules;
+    }
+
+    public GameEntity(CreateGameRequest createGameRequest)
+    {
+        Id = Guid.NewGuid();
+        Name = createGameRequest.Name;
+        Description = createGameRequest.Description;
+        RequiredEquipment = createGameRequest.RequiredEquipment;
+        Rules = createGameRequest.Rules;
+    }
+
+    public GameEntity(Guid id, UpdateGameRequest updateGameRequest)
+    {
+        Id = id;
+        Name = updateGameRequest.Name;
+        Description = updateGameRequest.Description;
+        RequiredEquipment = updateGameRequest.RequiredEquipment;
+        Rules = updateGameRequest.Rules;
     }
 }

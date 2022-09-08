@@ -9,6 +9,7 @@ public class Game
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public List<Equipment> RequiredEquipment { get; set; } = new();
+    public string Rules { get; set; } = string.Empty;
 
     public Game()
     {
@@ -20,5 +21,6 @@ public class Game
         Name = gameEntity.Name;
         Description = gameEntity.Description;
         RequiredEquipment = gameEntity.RequiredEquipment;
+        Rules = gameEntity.Rules;
     }
 }

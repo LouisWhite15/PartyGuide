@@ -21,3 +21,12 @@ On the Raspberry Pi:
 ```shell
 docker load --input party-guide.tar
 ```
+
+## Migrations
+
+To add a migration
+```shell
+dotnet ef migrations add MigrationName -o Persistence/Migrations
+```
+
+To run the migration in, run the application in `Development` mode.

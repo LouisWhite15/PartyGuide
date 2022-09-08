@@ -1,6 +1,7 @@
 import { Box, Container } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from '../layout/header';
+import GamePage from '../pages/gamePage';
 import Games from '../pages/games';
 import Home from '../pages/home';
 import Questions from '../pages/questions';
@@ -17,6 +18,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/questions' element={<Questions />} />
             <Route path='/games' element={<Games />} />
+            <Route path='/game' element={<GamePage />} />
           </Routes>
         </BrowserRouter>
       </Box>

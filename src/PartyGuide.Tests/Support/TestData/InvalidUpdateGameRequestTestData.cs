@@ -9,5 +9,6 @@ internal class InvalidUpdateGameRequestTestData : TheoryData<Action<UpdateGameRe
         Add(updateGameRequest => updateGameRequest.Name = string.Empty);
         Add(updateGameRequest => updateGameRequest.Description = string.Empty);
         Add(updateGameRequest => updateGameRequest.RequiredEquipment = new());
+        Add(updateGameRequest => updateGameRequest.Rules = string.Empty);
     }
 }

@@ -10,7 +10,8 @@ internal static class GameRequestFactory
         {
             Name = "Test Name",
             Description = "Test description",
-            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cards }
+            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cards },
+            Rules = "Test rules"
         };
 
         customisation?.Invoke(createGameRequest);
@@ -36,7 +37,8 @@ internal static class GameRequestFactory
         {
             Name = "Updated Name",
             Description = "Updated Description",
-            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cups }
+            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cups },
+            Rules = "Updated rules"
         };
 
         customisation?.Invoke(updateGameRequest);

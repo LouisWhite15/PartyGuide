@@ -9,5 +9,6 @@ internal class InvalidCreateGameRequestTestData : TheoryData<Action<CreateGameRe
         Add(createGameRequest => createGameRequest.Name = string.Empty);
         Add(createGameRequest => createGameRequest.Description = string.Empty);
         Add(createGameRequest => createGameRequest.RequiredEquipment = new());
+        Add(createGameRequest => createGameRequest.Rules = string.Empty);
     }
 }

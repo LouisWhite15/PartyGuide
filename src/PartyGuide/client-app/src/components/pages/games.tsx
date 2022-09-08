@@ -1,13 +1,15 @@
 import { Box, Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Game from "../common/types/game";
 
 const Games : React.FC = () => {
+  let navigate = useNavigate();
+  
   const { state } = useLocation();
   let games = state as Game[]
 
-  const renderGames = ( games: Game[] ) => {
+  const renderGames = (games: Game[]) => {
     if (games.length > 0) {
       return games.map((game, index) => {
         return (
@@ -19,7 +21,7 @@ const Games : React.FC = () => {
               animate={{ opacity: 1, scale: 1,  }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
             >
-              <CardActionArea>
+              <CardActionArea onClick={() => navigate('/game', { state: game })}>
                 <CardContent>
                 <Typography variant="h5" component="div">
                     {game.name}

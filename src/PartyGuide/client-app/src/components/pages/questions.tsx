@@ -36,9 +36,6 @@ const Questions : React.FC = () => {
     let gamesResponse = await getGames() as GetGamesResponse;
     setLoading(false);
 
-    console.log('gamesresponse')
-    console.log(gamesResponse)
-
     navigate('/games', { state: gamesResponse });
   };
 
@@ -55,15 +52,11 @@ const Questions : React.FC = () => {
         },
       );
 
-      console.log(JSON.stringify(data, null, 4));
-
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log('error message: ', error.message);
         return error.message;
       } else {
-        console.log('unexpected error: ', error);
         return 'An unexpected error occurred';
       }
     }

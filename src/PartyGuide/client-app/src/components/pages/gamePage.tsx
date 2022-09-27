@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
-import { motion } from "framer-motion";
+import { Box } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { AnimatedBody, AnimatedHeader, AnimatedSubHeader } from "../common/animatedTypography";
 import Equipment from "../common/types/equipment";
 import Game from "../common/types/game";
 
@@ -16,65 +16,36 @@ const GamePage : React.FC = () => {
 
   return (
     <Box sx={{ mx: 2, textAlign: "center" }} >
-      <Typography 
-        variant="h2"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 0 }}
-      >
-        {game.name}
-      </Typography>
-      <Typography
+      <AnimatedHeader 
+        content={game.name} 
+        delay={0}
         sx={{ my: 2 }}
-        variant="body1"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        {game.description}
-      </Typography>
-      <Typography
-        sx={{ my: 2, mt: 4 }}
-        variant="h5"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        Required Equipment
-      </Typography>
-      <Typography
+      />
+      <AnimatedBody 
+        content={game.description} 
+        delay={0.2}
         sx={{ my: 2 }}
-        variant="body1"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 0.6 }}
-      >
-        {formatRequiredEquipment()}
-      </Typography>
-      <Typography
+      />
+      <AnimatedSubHeader 
+        content="Required Equipment"
+        delay={0.4}
         sx={{ my: 2, mt: 4 }}
-        variant="h5"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 0.8 }}
-      >
-        Rules
-      </Typography>
-      <Typography
-        sx={{ my: 2}}
-        variant="body1"
-        component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1,  }}
-        transition={{ duration: 0.5, delay: 1 }}
-      >
-        {game.rules}
-      </Typography>
+      />
+      <AnimatedBody
+        content={formatRequiredEquipment()}
+        delay={0.6}
+        sx={{ my: 2 }}
+      />
+      <AnimatedSubHeader 
+        content="Rules"
+        delay={0.8}
+        sx={{ my: 2, mt: 4 }}
+      />
+      <AnimatedBody
+        content={game.rules}
+        delay={1.0}
+        sx={{ my: 2 }}
+      />
     </Box>
   )
 }

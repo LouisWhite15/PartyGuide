@@ -40,6 +40,7 @@ builder.Services.AddSingleton(_ => config);
 
 // Services
 builder.Services.AddTransient<IGameService, GameService>();
+builder.Services.AddTransient<ITournamentService, TournamentService>();
 
 // Persistence
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

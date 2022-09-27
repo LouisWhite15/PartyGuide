@@ -1,7 +1,6 @@
-﻿using System;
-namespace PartyGuide.Contracts.Requests;
+﻿namespace PartyGuide.Contracts.Game;
 
-public class UpdateGameRequest
+public class CreateGameRequest
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

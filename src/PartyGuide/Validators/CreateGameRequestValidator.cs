@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PartyGuide.Contracts.Requests;
+using PartyGuide.Contracts.Game;
 
 namespace PartyGuide.Validators;
 

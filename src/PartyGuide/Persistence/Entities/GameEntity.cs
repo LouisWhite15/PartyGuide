@@ -1,5 +1,5 @@
 ﻿using PartyGuide.Contracts;
-using PartyGuide.Contracts.Requests;
+using PartyGuide.Contracts.Game;
 using PartyGuide.Models;
 using System.ComponentModel.DataAnnotations;
 

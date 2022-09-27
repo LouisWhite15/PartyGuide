@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using PartyGuide.Contracts.Requests;
+using PartyGuide.Contracts.Game;
 using PartyGuide.Services;
 
 namespace PartyGuide.Controllers;

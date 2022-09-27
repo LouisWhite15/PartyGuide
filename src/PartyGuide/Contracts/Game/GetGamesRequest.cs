@@ -1,4 +1,4 @@
-﻿namespace PartyGuide.Contracts.Requests;
+﻿namespace PartyGuide.Contracts.Game;
 
 public class GetGamesRequest
 {

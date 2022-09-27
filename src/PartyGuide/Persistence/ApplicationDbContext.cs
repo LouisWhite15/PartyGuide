@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PartyGuide.Contracts;
+using PartyGuide.Contracts.Game;
 using PartyGuide.Persistence.Entities;
 
 namespace PartyGuide.Persistence;

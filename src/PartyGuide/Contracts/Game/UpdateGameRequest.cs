@@ -1,6 +1,8 @@
-﻿namespace PartyGuide.Contracts.Requests;
+﻿using System;
 
-public class CreateGameRequest
+namespace PartyGuide.Contracts.Game;
+
+public class UpdateGameRequest
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

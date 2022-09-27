@@ -1,4 +1,4 @@
-﻿namespace PartyGuide.Contracts;
+﻿namespace PartyGuide.Contracts.Game;
 
 public enum Equipment
 {

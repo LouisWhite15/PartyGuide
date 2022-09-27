@@ -1,4 +1,4 @@
-﻿using PartyGuide.Contracts.Requests;
+﻿using PartyGuide.Contracts.Game;
 
 namespace PartyGuide.Tests.Support.TestData;
 

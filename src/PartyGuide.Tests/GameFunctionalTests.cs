@@ -1,5 +1,5 @@
 using PartyGuide.Contracts;
-using PartyGuide.Contracts.Requests;
+using PartyGuide.Contracts.Game;
 using PartyGuide.Models;
 using PartyGuide.Tests.Support;
 using PartyGuide.Tests.Support.Extensions;

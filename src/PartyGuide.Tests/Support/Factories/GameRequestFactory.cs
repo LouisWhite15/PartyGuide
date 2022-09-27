@@ -1,4 +1,4 @@
-﻿using PartyGuide.Contracts.Requests;
+﻿using PartyGuide.Contracts.Game;
 
 namespace PartyGuide.Tests.Support.Factories;
 
@@ -10,7 +10,7 @@ internal static class GameRequestFactory
         {
             Name = "Test Name",
             Description = "Test description",
-            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cards },
+            RequiredEquipment = new List<Equipment> { Equipment.Cards },
             Rules = "Test rules"
         };
 
@@ -23,7 +23,7 @@ internal static class GameRequestFactory
     {
         var getGamesRequest = new GetGamesRequest
         {
-            SelectedEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cards }
+            SelectedEquipment = new List<Equipment> { Equipment.Cards }
         };
 
         customisation?.Invoke(getGamesRequest);
@@ -37,7 +37,7 @@ internal static class GameRequestFactory
         {
             Name = "Updated Name",
             Description = "Updated Description",
-            RequiredEquipment = new List<Contracts.Equipment> { Contracts.Equipment.Cups },
+            RequiredEquipment = new List<Equipment> { Equipment.Cups },
             Rules = "Updated rules"
         };
 

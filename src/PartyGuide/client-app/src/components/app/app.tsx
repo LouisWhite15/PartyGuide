@@ -5,6 +5,7 @@ import GamePage from '../pages/gamePage';
 import Games from '../pages/games';
 import Home from '../pages/home';
 import Questions from '../pages/questions';
+import TournamentPage from '../pages/tournament';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/questions' element={<Questions />} />
             <Route path='/games' element={<Games />} />
             <Route path='/game' element={<GamePage />} />
+            <Route path='/tournament' element={<TournamentPage />} />
           </Routes>
         </BrowserRouter>
       </Box>

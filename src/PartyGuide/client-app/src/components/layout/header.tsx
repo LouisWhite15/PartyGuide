@@ -1,11 +1,10 @@
 import { AppBar, Box, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, SwipeableDrawer, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import AdminIcon from '@mui/icons-material/AdminPanelSettings';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
-import { motion } from "framer-motion";
 
 interface HeaderProps {
   title: string
@@ -49,6 +48,16 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem 
+          key="Tournament Builder" 
+          disablePadding>
+          <ListItemButton key="tournament-builder" component={Link} to="/tournament">
+            <ListItemIcon>
+              <AccountTreeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Tournament Builder" />
           </ListItemButton>
         </ListItem>
       </List>

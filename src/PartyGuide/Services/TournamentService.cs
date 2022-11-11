@@ -1,5 +1,6 @@
 ﻿using System;
 using PartyGuide.Contracts.Tournament;
+using PartyGuide.Extensions;
 using PartyGuide.Models;
 
 namespace PartyGuide.Services;
@@ -26,6 +27,7 @@ public class TournamentService : ITournamentService
         {
             Name = participant.Name
         }).ToList();
+        participantsCopy.Shuffle();
 
         var matches = new List<Match>();
 

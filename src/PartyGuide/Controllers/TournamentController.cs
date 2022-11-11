@@ -8,7 +8,7 @@ using PartyGuide.Validators;
 namespace PartyGuide.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class TournamentController : ControllerBase
 {
     private readonly ILogger<TournamentController> _logger;
